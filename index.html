@@ -377,6 +377,7 @@ body.storm .ring{stroke:#8E7CFF}
 .seg button.on{background:var(--jade);color:#fff;font-weight:700}
 .bklist{display:grid;gap:8px}
 .bkitem{display:flex;align-items:center;gap:10px;padding:10px;border:1px solid var(--line);border-radius:12px;background:var(--paper2)}
+.bkitem.locked{opacity:.55}.bkitem.locked .bkcover{background:var(--line);color:var(--muted);font-size:18px}
 .bkcover.sys{background:linear-gradient(135deg,#2F7D6B,#1B4D41);color:#F4E3B0}
 .bkcover{width:44px;height:58px;flex:none;display:grid;place-items:center;background:linear-gradient(135deg,#8C2F24,#5A1A12);color:#F4D58D;border-radius:4px 8px 8px 4px;font-size:22px;font-weight:900;box-shadow:inset 4px 0 0 rgba(0,0,0,.25)}
 .rdbar{display:flex;gap:8px;align-items:center;position:sticky;top:0;z-index:3;padding:6px 0;background:color-mix(in srgb,var(--paper) 92%,transparent)}
@@ -392,6 +393,24 @@ body.storm .ring{stroke:#8E7CFF}
 .tk.ku{color:var(--muted);border-bottom:1px dotted var(--muted)}
 .rdleg .tk{cursor:default;padding:0 4px}
 details summary{cursor:pointer}
+
+/* căn cơ */
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(76px,1fr));gap:8px}
+.pcard,.rcard,.tcard{border:1px solid var(--line);background:var(--paper2);border-radius:12px;padding:8px 4px;display:flex;flex-direction:column;align-items:center;gap:1px;position:relative}
+.pcard b{font-size:24px;color:var(--cinnabar);font-family:"Be Vietnam Pro",sans-serif}
+.pcard .han{font-size:20px}.pcard small,.rcard small,.tcard small{font-size:11px;color:var(--muted);text-align:center;line-height:1.3}
+.pcard.seen,.rcard.seen,.tcard.seen{border-color:var(--jade);box-shadow:inset 0 -3px 0 var(--jade-soft)}
+.phon{font-size:56px;font-weight:900;color:var(--cinnabar);line-height:1}
+.tgrid5{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;margin-bottom:10px}
+.tcard svg{width:100%;height:40px}.tcard b{font-size:28px}
+.rgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:8px;margin-top:10px}
+.rcard b{font-size:30px;line-height:1.2}.rcard .rn{position:absolute;top:3px;left:6px;font-size:10px;color:var(--muted)}
+.rcard .rhv{font-weight:700;font-size:13px}
+.bqbox{text-align:center;margin-top:10px}
+.bqp{font-size:clamp(40px,12vw,60px);font-weight:900;cursor:pointer;line-height:1.2}
+.bqp.vi{font-family:"Be Vietnam Pro",sans-serif;font-size:26px}
+.opts.five{grid-template-columns:repeat(5,1fr)}.opts.five .opt{font-size:14px;padding:6px 2px}
+@media (max-width:420px){.tabs button{font-size:11px}.tabs .han{font-size:18px}}
 @media (min-width:900px){#sage{left:auto;right:24px;bottom:24px;flex-direction:row-reverse}#sage .sage-txt{border-radius:14px 14px 4px 14px}.medit{width:130px;margin-top:-52px}.me{width:120px}.foe-art{width:190px}}
 html.nofx *,html.nofx *::before,html.nofx *::after{animation:none!important;transition:none!important}
 html.nofx .mote{display:none}
@@ -453,6 +472,13 @@ setTimeout(function(){if(!window.__ttOK)window.__bootErr("Game tải quá lâu (
     <div class="opts" id="sOpts"></div>
     <div class="fb" id="sFb"></div>
   </div>
+</section>
+
+<!-- CĂN CƠ -->
+<section class="view" id="vBase">
+  <h2>Tu luyện căn cơ</h2>
+  <div class="chips" id="baseTabs"></div>
+  <div id="baseBody"></div>
 </section>
 
 <!-- BÍ CẢNH -->
@@ -567,6 +593,11 @@ setTimeout(function(){if(!window.__ttOK)window.__bootErr("Game tải quá lâu (
       <input class="search" id="admP" type="password" placeholder="Mật khẩu" autocomplete="current-password" style="margin-top:8px">
       <button class="btn main wide" id="admGo" style="margin-top:8px">Đăng nhập</button>
     </div>
+    <div id="admLite" style="display:none">
+      <p style="margin-top:0"><b>🔓 Tài khoản admin</b></p>
+      <p class="muted small">Được chọn luyện mọi cấp HSK (HSK1–6) trong phần Tu luyện, kể cả các cấp chưa đạt cảnh giới. Các phần khác (Bí cảnh, Tàng Kinh Các, cảnh giới, khảo hạch) vẫn giữ như bình thường.</p>
+      <button class="btn wide" id="admLiteOut">Đăng xuất</button>
+    </div>
     <div id="admPanel" style="display:none">
       <p style="margin-top:0"><b>👑 Quyền truy cập tối cao</b> <span class="muted small">· mọi cấp HSK, bài đọc/nghe và bí cảnh đã mở</span></p>
       <label class="small muted">Chuyển cảnh giới</label>
@@ -591,6 +622,7 @@ setTimeout(function(){if(!window.__ttOK)window.__bootErr("Game tải quá lâu (
 
 <nav class="tabs">
   <button class="on" data-v="vTrain"><span class="han">修</span>Tu luyện</button>
+  <button data-v="vBase"><span class="han">基</span>Căn cơ</button>
   <button data-v="vBoss"><span class="han">战</span>Bí cảnh</button>
   <button data-v="vWrite"><span class="han">键</span>Luyện gõ</button>
   <button data-v="vLib"><span class="han">经</span>Tàng kinh</button>
@@ -862,6 +894,41 @@ const SYSB=[
 ["第三章 回家的路","他推掉了所有的会议，订了最早的一班高铁。当年需要坐一天一夜的路程，如今只要四个小时。可越接近家乡，他的心就越不安：村口的路修宽了，老房子拆了不少，他几乎认不出来了。他突然害怕，害怕自己回来得太晚。","Anh hủy hết mọi cuộc họp, đặt chuyến tàu cao tốc sớm nhất. Quãng đường năm xưa phải đi một ngày một đêm, nay chỉ mất bốn tiếng. Nhưng càng gần quê, lòng anh càng bất an: đường đầu làng đã được mở rộng, nhà cũ bị dỡ không ít, anh gần như không nhận ra nữa. Anh bỗng sợ hãi, sợ mình về quá muộn.","推开院门的那一刻，他看见母亲正坐在柿子树下择菜。她的头发全白了，背也驼了，听见声音，缓缓抬起头，愣了好一会儿，才轻声说：“回来了？饭在锅里，还热着。”就像他只是出门买了一趟东西，而不是离开了二十年。","Khoảnh khắc đẩy cánh cổng sân, anh thấy mẹ đang ngồi dưới gốc hồng nhặt rau. Tóc bà đã bạc trắng, lưng cũng còng, nghe tiếng động liền chậm rãi ngẩng lên, sững lại hồi lâu mới khẽ nói: “Về rồi à? Cơm trong nồi, vẫn còn nóng.” Như thể anh chỉ vừa ra ngoài mua chút đồ, chứ không phải đã đi xa hai mươi năm."],
 ["第四章 柿子","那天晚上，母亲从柜子里拿出一个竹篮，里面整整齐齐地摆着晒干的柿饼。“新鲜的放不住，我就晒成了柿饼，一年一年地攒着。”陈默数了数，一共二十串，每一串上都系着一张纸条，写着年份。","Tối hôm đó, mẹ lấy từ trong tủ ra một chiếc giỏ tre, bên trong xếp ngay ngắn những chiếc hồng sấy khô. “Hồng tươi không để lâu được, mẹ phơi thành hồng sấy, năm này qua năm khác để dành.” Trần Mặc đếm thử, tổng cộng hai mươi xâu, xâu nào cũng buộc một mảnh giấy ghi năm.","他再也忍不住，像个孩子一样哭了起来。母亲拍着他的背，笑着说：“哭什么，又不是不回来了。”后来，陈默把公司交给了合伙人，在家乡办了一个果园，种满了柿子树。他常对来访的年轻人说：“人这一辈子走得再远，也别忘了，有一条路叫归途。”","Anh không kìm được nữa, bật khóc như một đứa trẻ. Mẹ vỗ lưng anh, cười nói: “Khóc gì chứ, có phải không về nữa đâu.” Về sau, Trần Mặc giao công ty cho người hùn vốn, về quê mở một vườn cây, trồng đầy hồng. Anh thường nói với những người trẻ đến thăm: “Đời người dù đi xa đến đâu, cũng đừng quên có một con đường gọi là đường về.”"]]]
 ].map(([id,title,lv,chs])=>({id,title,lv,sys:1,chapters:chs.map(c=>{const u=[];for(let i=1;i<c.length;i+=2)u.push({zh:c[i],vi:c[i+1],py:""});return{t:c[0],u}})}));
+
+const INITS=[
+["Âm môi",[["b","波","bō","Gần “b” tiếng Việt nhưng nhẹ hơn, hai môi bật ra, KHÔNG bật hơi.","p"],["p","坡","pō","Giống b nhưng BẬT HƠI mạnh: đặt tờ giấy trước miệng sẽ thấy giấy rung.","b"],["m","摸","mō","Như “m” tiếng Việt.","n"],["f","佛","fó","Như “ph” tiếng Việt: răng trên chạm môi dưới.","h"]]],
+["Âm đầu lưỡi",[["d","得","dé","Như “t” tiếng Việt (không bật hơi), KHÔNG phải “đ”.","t"],["t","特","tè","Như “th” tiếng Việt: bật hơi mạnh.","d"],["n","讷","nè","Như “n” tiếng Việt.","l"],["l","勒","lè","Như “l” tiếng Việt.","n"]]],
+["Âm cuống lưỡi",[["g","哥","gē","Như “c/k” tiếng Việt (cá, kê), không bật hơi.","k"],["k","科","kē","Như g nhưng bật hơi mạnh; KHÁC “kh” tiếng Việt.","g"],["h","喝","hē","Gần “kh” tiếng Việt: hơi cọ xát ở cuống lưỡi.","f"]]],
+["Âm mặt lưỡi",[["j","鸡","jī","Gần “ch” tiếng Việt: mặt lưỡi áp vòm miệng, môi dẹt, không bật hơi. Chỉ đi với i, ü.","q"],["q","七","qī","Như j nhưng bật hơi mạnh (gần “ch” + luồng hơi).","j"],["x","西","xī","Gần “x” tiếng Việt, mặt lưỡi gần vòm, môi dẹt như cười.","s"]]],
+["Âm uốn lưỡi",[["zh","知","zhī","Uốn đầu lưỡi lên vòm, gần “tr” (giọng miền Trung), không bật hơi.","z"],["ch","吃","chī","Như zh nhưng bật hơi mạnh.","c"],["sh","诗","shī","Uốn lưỡi, gần “s” nặng (giọng miền Trung, Nam).","s"],["r","日","rì","Uốn lưỡi như sh nhưng rung dây thanh, gần “r” nhẹ, không rung lưỡi.","l"]]],
+["Âm đầu lưỡi trước",[["z","资","zī","Gần “ts”: đầu lưỡi chạm chân răng trên, không bật hơi.","zh"],["c","次","cì","Như z nhưng bật hơi mạnh (ts + hơi).","ch"],["s","思","sī","Như “x” tiếng Việt. Lưu ý: zi, ci, si đọc -i như “ư” ngắn.","sh"]]],
+["Bán nguyên âm",[["y","衣","yī","Đứng đầu thay cho i: yi = i, ya = ia, yu = ü.","w"],["w","乌","wū","Đứng đầu thay cho u: wu = u, wa = ua, wo = uo.","y"]]]];
+const FINS=[
+["Vận mẫu đơn",[["a","啊","ā","Như “a” tiếng Việt, miệng mở rộng."],["o","喔","ō","Gần “ô” rồi hơi lướt sang “ua”, môi tròn."],["e","鹅","é","Gần “ưa/ơ”: miệng hé, lưỡi lùi về sau, môi không tròn."],["i","衣","yī","Như “i”. Sau zh ch sh r z c s đọc như “ư” ngắn."],["u","乌","wū","Như “u”, môi tròn và chu ra."],["ü","鱼","yú","Lưỡi đọc “i” nhưng môi tròn như “u” (gần “uy” đọc liền). Sau j q x y viết là u."],["er","儿","ér","Đọc “ơ” rồi cong đầu lưỡi lên."]]],
+["Vận mẫu kép",[["ai","爱","ài","Như “ai”."],["ei","黑","hēi","Như “ây”."],["ui","灰","huī","Viết tắt của uei, đọc gần “uây”."],["ao","奥","ào","Như “ao”."],["ou","欧","ōu","Như “âu”."],["iu","优","yōu","Viết tắt của iou, đọc gần “yêu”."],["ie","耶","yē","Như “iê” (tiên bỏ n)."],["üe","月","yuè","Gần “uyê”, môi tròn ở đầu."]]],
+["Vận mẫu mũi",[["an","安","ān","Như “an”, kết thúc ở đầu lưỡi."],["en","恩","ēn","Gần “ân”."],["in","因","yīn","Như “in”."],["un","温","wēn","Viết tắt của uen, gần “uân”."],["ün","云","yún","Gần “uyn”, môi tròn."],["ang","昂","áng","Như “ang”, âm mũi ở cuống lưỡi."],["eng","灯","dēng","Gần “âng”."],["ing","英","yīng","Gần “inh”."],["ong","东","dōng","Gần “ung” (miệng tròn)."]]],
+["Kết hợp i · u · ü",[["ia","家","jiā","i lướt nhanh sang a: gần “ia” đọc liền."],["iao","要","yào","Gần “iao”."],["ian","天","tiān","Đọc như “iên”, không phải “i-an”."],["iang","羊","yáng","Gần “iang”."],["iong","用","yòng","Gần “iung”."],["ua","花","huā","Gần “oa”."],["uo","我","wǒ","Gần “ua/uô”."],["uai","快","kuài","Gần “oai”."],["uan","关","guān","Gần “oan”."],["uang","光","guāng","Gần “oang”."],["üan","元","yuán","Gần “uyên” (sau j q x y viết là uan)."]]]];
+const TONES=[[1,"妈","mā","Thanh 1 · cao bằng (5-5)","Giữ giọng cao và đều như ngân một nốt nhạc. Gần thanh ngang tiếng Việt nhưng cao hơn.","M5 10 L95 10"],[2,"麻","má","Thanh 2 · đi lên (3-5)","Từ giữa vút lên cao, giống thanh sắc tiếng Việt.","M5 30 L95 8"],[3,"马","mǎ","Thanh 3 · xuống rồi lên (2-1-4)","Hạ thấp rồi hơi nâng lên, gần thanh hỏi. Khi nói nhanh thường chỉ hạ thấp (bán thanh 3).","M5 28 Q40 52 95 16"],[4,"骂","mà","Thanh 4 · đi xuống (5-1)","Từ cao rơi mạnh xuống thấp, dứt khoát như ra lệnh. Gần thanh huyền nhưng bắt đầu cao và nhanh hơn.","M5 8 L95 46"],[5,"吗","ma","Thanh nhẹ","Đọc ngắn, nhẹ, không dấu, cao độ tùy âm tiết đứng trước.","M40 30 L60 30"]];
+const TONE_RULES=[["Hai thanh 3 đứng liền nhau","Thanh 3 đứng trước đổi thành thanh 2: 你好 nǐ hǎo → đọc ní hǎo; 很好 hěn hǎo → hén hǎo.","你好"],["不 bù","Đứng trước thanh 4 đổi thành bú: 不是 búshì, 不要 búyào. Các trường hợp khác giữ bù.","不是"],["一 yī","Trước thanh 4 đọc yí (一个 yí gè); trước thanh 1, 2, 3 đọc yì (一天 yì tiān); đứng một mình hoặc đếm số đọc yī.","一个"]];
+const RAD_RAW=[
+[1,"一||yī|Nhất|số một|二三丁","丨||gǔn|Cổn|nét sổ|中串","丶||zhǔ|Chủ|dấu chấm|主丸","丿||piě|Phiệt|nét phẩy|乃久","乙|乚|yǐ|Ất|can thứ hai|九乞","亅||jué|Quyết|nét móc|了事"],
+[2,"二||èr|Nhị|số hai|五井","亠||tóu|Đầu|nắp, đỉnh|六京","人|亻|rén|Nhân|người|你他","儿||ér|Nhi|chân người|先兄","入||rù|Nhập|vào|全内","八|丷|bā|Bát|số tám|公共","冂||jiōng|Quynh|vùng xa|再冉","冖||mì|Mịch|trùm, che|写军","冫||bīng|Băng|nước đá|冷冰","几||jǐ|Kỷ|ghế dựa|凡凳","凵||kǎn|Khảm|há miệng|出画","刀|刂|dāo|Đao|con dao|分到","力||lì|Lực|sức mạnh|加动","勹||bāo|Bao|bao bọc|包句","匕||bǐ|Chủy|cái thìa|北化","匚||fāng|Phương|cái hộp|匠匣","匸||xǐ|Hễ|che giấu|匹区","十||shí|Thập|số mười|千午","卜||bǔ|Bốc|xem bói|占卡","卩|㔾|jié|Tiết|đốt tre|印即","厂||hǎn|Hán|sườn núi|厚原","厶||sī|Khư|riêng tư|去参","又||yòu|Hựu|lại nữa|友双"],
+[3,"口||kǒu|Khẩu|cái miệng|吃喝","囗||wéi|Vi|vây quanh|国回","土||tǔ|Thổ|đất|地在","士||shì|Sĩ|kẻ sĩ|声壮","夂||zhǐ|Truy|đến sau|处备","夊||suī|Tuy|đi chậm|夏","夕||xī|Tịch|buổi tối|多夜","大||dà|Đại|to lớn|天太","女||nǚ|Nữ|con gái|好妈","子||zǐ|Tử|con|字学","宀||mián|Miên|mái nhà|家安","寸||cùn|Thốn|tấc|对封","小|⺌|xiǎo|Tiểu|nhỏ|少尖","尢||wāng|Uông|yếu, què|就尤","尸||shī|Thi|thây người|屋局","屮||chè|Triệt|mầm cây|屯","山||shān|Sơn|núi|岛岸","巛|川|chuān|Xuyên|sông ngòi|州巡","工||gōng|Công|người thợ|左差","己|已巳|jǐ|Kỷ|bản thân|巴巷","巾||jīn|Cân|cái khăn|帽市","干||gān|Can|thiên can|年平","幺||yāo|Yêu|nhỏ bé|幼幽","广||guǎng|Nghiễm|mái nhà rộng|店床","廴||yǐn|Dẫn|bước dài|建延","廾||gǒng|Củng|chắp tay|开弄","弋||yì|Dặc|bắn, chiếm lấy|式","弓||gōng|Cung|cây cung|张弟","彐|彑|jì|Kệ|đầu con nhím|当录","彡||shān|Sam|lông tóc dài|形影","彳||chì|Xích|bước chân trái|很往"],
+[4,"心|忄|xīn|Tâm|trái tim|想快","戈||gē|Qua|cây giáo|我成","戶|户|hù|Hộ|cửa một cánh|房所","手|扌|shǒu|Thủ|tay|打拿","支||zhī|Chi|cành nhánh|支","攴|攵|pū|Phộc|đánh khẽ|教数","文||wén|Văn|văn vẻ|斑","斗||dǒu|Đẩu|cái đấu|料","斤||jīn|Cân|cái rìu|新断","方||fāng|Phương|vuông, phương hướng|旅族","无|旡|wú|Vô|không|既","日||rì|Nhật|mặt trời|明早","曰||yuē|Viết|nói rằng|最曾","月||yuè|Nguyệt|mặt trăng|朋有","木||mù|Mộc|cây|林树","欠||qiàn|Khiếm|thiếu|欢歌","止||zhǐ|Chỉ|dừng lại|正步","歹|歺|dǎi|Đãi|xấu xa|死残","殳||shū|Thù|binh khí dài|段殿","毋|母|wú|Vô|chớ, đừng|每","比||bǐ|Tỷ|so sánh|毕","毛||máo|Mao|lông|毯","氏||shì|Thị|họ|民","气||qì|Khí|hơi, khí|氧","水|氵|shuǐ|Thủy|nước|河海","火|灬|huǒ|Hỏa|lửa|热灯","爪|爫|zhǎo|Trảo|móng vuốt|爬爱","父||fù|Phụ|cha|爸爷","爻||yáo|Hào|hào (Kinh Dịch)|爽","爿|丬|qiáng|Tường|mảnh gỗ|将","片||piàn|Phiến|mảnh, tấm|版牌","牙||yá|Nha|răng|牙","牛|牜|niú|Ngưu|con trâu|物特","犬|犭|quǎn|Khuyển|con chó|狗猫"],
+[5,"玄||xuán|Huyền|màu đen huyền|率","玉|王|yù|Ngọc|đá quý|玩现","瓜||guā|Qua|quả dưa|瓣","瓦||wǎ|Ngõa|ngói|瓶","甘||gān|Cam|ngọt|甜","生||shēng|Sinh|sinh ra|生","用||yòng|Dụng|dùng|甩","田||tián|Điền|ruộng|男界","疋||pǐ|Thất|xấp vải|疑","疒||nè|Nạch|bệnh tật|病疼","癶||bō|Bát|gạt ra|登","白||bái|Bạch|màu trắng|的百","皮||pí|Bì|da|皱","皿||mǐn|Mãnh|bát đĩa|盘盒","目||mù|Mục|mắt|看眼","矛||máo|Mâu|cây giáo dài|矛","矢||shǐ|Thỉ|mũi tên|知短","石||shí|Thạch|đá|破础","示|礻|shì|Thị|thần đất, chỉ bảo|社祝","禸||róu|Nhựu|vết chân thú|禽","禾||hé|Hòa|cây lúa|秋种","穴||xué|Huyệt|hang lỗ|空穿","立||lì|Lập|đứng|站童"],
+[6,"竹|⺮|zhú|Trúc|tre|笔笑","米||mǐ|Mễ|gạo|粉糖","糸|纟|mì|Mịch|sợi tơ|红级","缶||fǒu|Phẫu|đồ sành|缺","网|罒|wǎng|Võng|cái lưới|罪置","羊||yáng|Dương|con dê|美群","羽||yǔ|Vũ|lông vũ|习翻","老|耂|lǎo|Lão|già|考者","而||ér|Nhi|mà, và|耐","耒||lěi|Lỗi|cái cày|耕","耳||ěr|Nhĩ|tai|聊职","聿||yù|Duật|cây bút|肆","肉|月|ròu|Nhục|thịt|肚脸","臣||chén|Thần|bề tôi|卧","自||zì|Tự|tự mình|臭","至||zhì|Chí|đến|致","臼||jiù|Cữu|cái cối|舅","舌||shé|Thiệt|cái lưỡi|舒","舛||chuǎn|Suyễn|sai lầm|舞","舟||zhōu|Chu|cái thuyền|船航","艮||gèn|Cấn|bền cứng|良","色||sè|Sắc|màu sắc|艳","艸|艹|cǎo|Thảo|cỏ|草花","虍||hū|Hô|vằn hổ|虎虑","虫||chóng|Trùng|sâu bọ|蛇虾","血||xuè|Huyết|máu|血","行||xíng|Hành|đi|街","衣|衤|yī|Y|áo|裤衬","襾|覀|yà|Á|che đậy|要西"],
+[7,"見|见|jiàn|Kiến|nhìn thấy|视觉","角||jiǎo|Giác|cái sừng|解","言|讠|yán|Ngôn|lời nói|说话","谷||gǔ|Cốc|thung lũng|谷","豆||dòu|Đậu|hạt đậu|豆","豕||shǐ|Thỉ|con lợn|象","豸||zhì|Trĩ|loài thú dữ|貌","貝|贝|bèi|Bối|vỏ sò, tiền|贵费","赤||chì|Xích|màu đỏ|赤","走||zǒu|Tẩu|chạy, đi|起超","足|⻊|zú|Túc|chân|跑跳","身||shēn|Thân|thân thể|躺","車|车|chē|Xa|xe|辆轻","辛||xīn|Tân|cay|辣","辰||chén|Thần|thìn, thời gian|辱","辵|辶|chuò|Sước|chợt đi chợt dừng|这还","邑|阝|yì|Ấp|vùng đất (阝 bên phải)|都那","酉||yǒu|Dậu|rượu|酒醒","釆||biàn|Biện|phân biệt|释","里||lǐ|Lý|dặm, làng|野重"],
+[8,"金|钅|jīn|Kim|kim loại|钱银","長|长|cháng|Trường|dài|长","門|门|mén|Môn|cửa hai cánh|问间","阜|阝|fù|Phụ|gò đất (阝 bên trái)|阳院","隶||lì|Đãi|kịp, đến|隶","隹||zhuī|Chuy|chim đuôi ngắn|难集","雨||yǔ|Vũ|mưa|雪雷","青||qīng|Thanh|màu xanh|静","非||fēi|Phi|không phải|靠"],
+[9,"面||miàn|Diện|mặt|面","革||gé|Cách|da thú|鞋","韋|韦|wéi|Vi|da đã thuộc|韩","韭||jiǔ|Cửu|rau hẹ|韭","音||yīn|Âm|âm thanh|韵","頁|页|yè|Hiệt|đầu, trang|题顺","風|风|fēng|Phong|gió|飘","飛|飞|fēi|Phi|bay|飞","食|饣|shí|Thực|ăn|饭饿","首||shǒu|Thủ|cái đầu|首","香||xiāng|Hương|mùi thơm|香"],
+[10,"馬|马|mǎ|Mã|con ngựa|骑妈","骨||gǔ|Cốt|xương|骨","高||gāo|Cao|cao|高","髟||biāo|Bưu|tóc dài|髦","鬥||dòu|Đấu|đánh nhau|鬧","鬯||chàng|Sưởng|rượu nếp|鬱","鬲||gé|Cách|cái nồi đỉnh|融","鬼||guǐ|Quỷ|con quỷ|魅魂"],
+[11,"魚|鱼|yú|Ngư|con cá|鲜","鳥|鸟|niǎo|Điểu|con chim|鸡鸭","鹵|卤|lǔ|Lỗ|đất mặn|卤","鹿||lù|Lộc|con hươu|鹿","麥|麦|mài|Mạch|lúa mạch|麦","麻||má|Ma|cây gai|麻"],
+[12,"黃|黄|huáng|Hoàng|màu vàng|黄","黍||shǔ|Thử|lúa nếp|黏","黑||hēi|Hắc|màu đen|默","黹||zhǐ|Chỉ|may vá|黹"],
+[13,"黽|黾|mǐn|Mãnh|con ếch|黾","鼎||dǐng|Đỉnh|cái đỉnh|鼎","鼓||gǔ|Cổ|cái trống|鼓","鼠||shǔ|Thử|con chuột|鼠"],
+[14,"鼻||bí|Tỵ|cái mũi|鼻","齊|齐|qí|Tề|ngang bằng|齐"],
+[15,"齒|齿|chǐ|Xỉ|răng|龄"],
+[16,"龍|龙|lóng|Long|con rồng|龙","龜|龟|guī|Quy|con rùa|龟"],
+[17,"龠||yuè|Dược|sáo ba lỗ|龠"]];
+const RADS=[];RAD_RAW.forEach(([st,...rs])=>rs.forEach(r=>{const[c,v,p,hv,m,ex]=r.split("|");RADS.push({n:RADS.length+1,c,v,p,hv,m,st,ex})}));
 const $=id=>document.getElementById(id);
 const KEY="tutien-hanngu-v2";
 const today=()=>new Date().toLocaleDateString("sv");
@@ -894,7 +961,8 @@ function stage(){const L=curLv(),rs=LVOF.map((x,i)=>x===L?i:-1).filter(i=>i>=0),
   return{L,idx,list,prev:Math.ceil(list.length*idx/tot),n:Math.ceil(list.length*(idx+1)/tot),cur:list.slice(0,Math.ceil(list.length*(idx+1)/tot))}}
 function unlockedWords(){if(S.admin)return W;const L=curLv(),c=new Set(stage().cur.map(w=>w.k));return W.filter(w=>w.l===7||w.l<L||c.has(w.k))}
 const lvOpen=l=>S.admin||l===7||l<=curLv();
-function pool(){let p=S.range==="realm"?W.filter(w=>w.l<curLv()||w.l===7).concat(stage().cur):unlockedWords().filter(w=>w.l===+S.range);return p.length>=4?p:W.filter(w=>w.l===1)}
+const lvOpenTrain=l=>lvOpen(l)||!!S.hskAll;
+function pool(){let p=S.range==="realm"?W.filter(w=>w.l<curLv()||w.l===7).concat(stage().cur):(S.hskAll&&+S.range>curLv()?W:unlockedWords()).filter(w=>w.l===+S.range);return p.length>=4?p:W.filter(w=>w.l===1)}
 function topList(){const st=stage();if(st.cur.length>=4)return st.cur;for(let l=curLv()-1;l>=1;l--){const p=W.filter(w=>w.l===l);if(p.length>=4)return p}return W.filter(w=>w.l===1)}
 const mult=()=>1+0.05*Object.keys(S.wins).length;
 const r1=x=>Math.round(x*10)/10;
@@ -922,14 +990,14 @@ function pickWord(list){
 }
 let lastK="";
 function psgFor(l){const L=curLv(),i=stage().idx;return PSG.filter(p=>p.l===l&&(S.admin||l<L||p.s<=i))}
-function pickPsg(l,mode){let c=psgFor(l);for(let x=l-1;!c.length&&x>=1;x--)c=psgFor(x);if(!c.length)return null;
+function pickPsg(l,mode,all){let c=all?PSG.filter(p=>p.l===l):psgFor(l);for(let x=l-1;!c.length&&x>=1;x--)c=psgFor(x);if(!c.length)return null;
   const i=stage().idx,L=curLv(),wt=c.map(p=>p.l===L&&p.s===i?3:1);let r=Math.random()*wt.reduce((a,b)=>a+b,0),P=c[c.length-1];
   for(let j=0;j<c.length;j++){r-=wt[j];if(r<=0){P=c[j];break}}
   const qq=P.qs[Math.random()*P.qs.length|0];return{psg:1,P,qq,mode,opts:shuffle(qq[2].slice()),correct:qq[2][0]}}
 function makeQ(list,type){
-  if(type==null){const ml=S.range==="realm"||S.range==="7"?curLv():+S.range;
-    if(S.mode==="r"||S.mode==="l"){const p=pickPsg(ml,S.mode);if(p)return p}
-    if(S.mode==="mix"&&Math.random()<.12){const p=pickPsg(ml,Math.random()<.5?"r":"l");if(p)return p}
+  if(type==null){const ml=S.range==="realm"||S.range==="7"?curLv():+S.range,pall=!!(S.hskAll&&ml>curLv());
+    if(S.mode==="r"||S.mode==="l"){const p=pickPsg(ml,S.mode,pall);if(p)return p}
+    if(S.mode==="mix"&&Math.random()<.12){const p=pickPsg(ml,Math.random()<.5?"r":"l",pall);if(p)return p}
     type=S.mode==="mix"?(Math.random()*5|0):({v:0,h:1,p:2,a:3,hv:4,t:5}[S.mode]||0)}
   if(type===5){const w=pickWord(list);lastK=w.k;return{w,type:5,typing:1,f:"h",correct:w}}
   if(type===4){const l2=list.filter(w=>w.hv);if(l2.length>=4)list=l2;else type=0}
@@ -1251,12 +1319,12 @@ function renderCfg(){const on=!S.hideCfg;$("cfg").style.display=on?"":"none";$("
   const m=MODES.find(x=>x[0]===S.mode);$("cfgSum").textContent=`${S.range==="realm"?"Theo cảnh giới":lvName(+S.range)} · ${m?m[1]:""}`}
 $("cfgBtn").onclick=()=>{S.hideCfg=!S.hideCfg;save();renderCfg()};
 function renderChips(){
-  if(S.range!=="realm"&&!lvOpen(+S.range))S.range="realm";
+  if(S.range!=="realm"&&!lvOpenTrain(+S.range))S.range="realm";
   const rc=$("rangeChips");rc.innerHTML="";
   [["realm","Theo cảnh giới"],...[1,2,3,4,5,6,7].map(l=>[String(l),lvName(l)])].forEach(([v,t])=>{
     if(v==="7"&&!hasLv(7))return;
     const b=document.createElement("button");b.className="chip"+(S.range===v?" on":"");b.textContent=t;
-    if(v!=="realm"&&!lvOpen(+v)){b.disabled=true;b.textContent="🔒 "+t}else if(v!=="realm"&&W.filter(w=>w.l===+v).length<4){b.disabled=true}
+    if(v!=="realm"&&!lvOpenTrain(+v)){b.disabled=true;b.textContent="🔒 "+t}else if(v!=="realm"&&!lvOpen(+v)){b.textContent="🔓 "+t}else if(v!=="realm"&&W.filter(w=>w.l===+v).length<4){b.disabled=true}
     b.onclick=()=>{S.range=v;save();renderChips();if(!trib)trainNext()};rc.appendChild(b)});
   const mc=$("modeChips");mc.innerHTML="";
   MODES.forEach(([v,t])=>{const b=document.createElement("button");b.className="chip"+(S.mode===v?" on":"");b.textContent=t;b.onclick=()=>{S.mode=v;save();renderChips();if(!tlock)trainNext()};mc.appendChild(b)});
@@ -1416,19 +1484,22 @@ async function saveBook(b){const st=$("bkStatus");if(!b.chapters.length){st.text
 function segment(z){const D=dict(),out=[];let i=0;const a=[...z];while(i<a.length){let hit=null;if(/[\u3400-\u9fff]/.test(a[i])){for(let L=Math.min(5,a.length-i);L>=1;L--){const s=a.slice(i,i+L).join("");if(D.has(s)){hit=s;break}}if(!hit)hit=a[i];out.push({t:hit,w:D.get(hit)||null,cjk:1});i+=[...hit].length}else{out.push({t:a[i]});i++}}return out}
 function tokHTML(z){const o=RDOPT(),uw=new Set(unlockedWords().map(w=>w.k));let n=0,k=0;
   const h=segment(z).map(t=>{if(!t.cjk)return esc(t.t);n++;let cl="ku";if(t.w){const s=sc(t.w);cl=s>=3?"kk":uw.has(t.w.k)?"kl":"kn";if(s>=3)k++}return`<span class="tk ${o.col?cl:""}" data-t="${esc(t.t)}">${esc(t.t)}</span>`}).join("");return{h,n,k}}
-function renderBooks(){const el=$("libBooks");if(RD)return renderReader();
+const bookLv=b=>{const m=((b&&b.lv)||"").match(/\d/);return m?+m[0]:0};
+const bookOpen=b=>!!S.admin||!bookLv(b)||bookLv(b)<=curLv();
+function renderBooks(){const el=$("libBooks");if(RD&&!bookOpen(BOOKC[RD.id]))RD=null;if(RD)return renderReader();
   el.innerHTML=`<details class="panel"><summary><b>📂 Thêm sách từ máy của bạn</b></summary><p class="muted small">Chọn file PDF hoặc TXT có chữ Hán (sách song ngữ càng tốt). ${cloudOK()?"☁️ Sách bạn thêm được lưu riêng trong tài khoản của bạn (chỉ bạn đọc được). Mở game trên máy khác bằng cùng tài khoản, sách sẽ tự tải về.":"Sách được lưu trên thiết bị này. Tạo hồ sơ đạo hữu trong Động phủ để sách tự đồng bộ sang máy khác."}</p>
   <label class="btn main" style="display:inline-block">📖 Chọn file sách<input type="file" id="bkFile" accept=".pdf,.txt,application/pdf,text/plain" hidden></label>
   <details style="margin-top:10px"><summary class="small muted">Hoặc dán văn bản</summary><textarea id="bkPaste" placeholder="Dán nội dung có chữ Hán vào đây"></textarea><button class="btn" id="bkPasteGo" style="margin-top:6px">Thêm sách từ văn bản</button></details>
   <p class="small" id="bkStatus" style="margin-bottom:0"></p></details>`+
-  (()=>{const item=b=>{const pos=(S.bookPos||{})[b.id],rd=Object.keys(S.bookRead||{}).filter(k=>k.startsWith(b.id+":")).length;return`<div class="bkitem"><div class="bkcover han${b.sys?" sys":""}">${esc([...b.title][0]||"書")}</div><div style="flex:1;min-width:0"><b>${esc(b.title)}</b><small class="muted" style="display:block">${b.lv?b.lv+" · ":""}${b.nch} chương · đã đọc ${rd}/${b.nch}</small></div><button class="btn main" data-open="${b.id}">${pos==null?"Đọc":"Đọc tiếp"}</button>${b.sys?"":`<button class="btn" data-del="${b.id}" aria-label="Xóa sách">✕</button>`}</div>`};
+  (()=>{const item=b=>{const pos=(S.bookPos||{})[b.id],rd=Object.keys(S.bookRead||{}).filter(k=>k.startsWith(b.id+":")).length,op=bookOpen(b),need=R[Math.max(0,LVOF.indexOf(bookLv(b)))][0];
+      return`<div class="bkitem${op?"":" locked"}"><div class="bkcover han${b.sys?" sys":""}">${op?esc([...b.title][0]||"書"):"🔒"}</div><div style="flex:1;min-width:0"><b>${esc(b.title)}</b><small class="muted" style="display:block">${b.lv?b.lv+" · ":""}${b.nch} chương${op?` · đã đọc ${rd}/${b.nch}`:` · mở khi đạt ${need}`}</small></div>${op?`<button class="btn main" data-open="${b.id}">${pos==null?"Đọc":"Đọc tiếp"}</button>`:`<button class="btn" disabled>🔒</button>`}${b.sys?"":`<button class="btn" data-del="${b.id}" aria-label="Xóa sách">✕</button>`}</div>`};
     const sys=BOOKS.filter(b=>b.sys),mine=BOOKS.filter(b=>!b.sys);
-    return`<h3>Thư viện có sẵn</h3><p class="muted small" style="margin-top:0">10 truyện song ngữ Trung – Việt, xếp từ dễ đến khó. Bật “Tiếng Việt” để xem bản dịch, chạm vào chữ để tra pinyin.</p><div class="bklist">${sys.map(item).join("")}</div>`+(mine.length?`<h3>Sách của bạn</h3><div class="bklist">${mine.map(item).join("")}</div>`:"")})();
+    return`<h3>Thư viện có sẵn</h3><p class="muted small" style="margin-top:0">10 truyện song ngữ Trung – Việt, xếp từ dễ đến khó, mở dần theo cảnh giới. Bật “Tiếng Việt” để xem bản dịch, chạm vào chữ để tra pinyin.</p><div class="bklist">${sys.map(item).join("")}</div>`+(mine.length?`<h3>Sách của bạn</h3><div class="bklist">${mine.map(item).join("")}</div>`:"")})();
   $("bkFile").onchange=e=>{const f=e.target.files[0];if(f)importBook(f)};
   $("bkPasteGo").onclick=()=>{const t=$("bkPaste").value;if(!t.trim())return;saveBook(parseBook(t,"Văn bản dán "+new Date().toLocaleDateString("vi-VN")))};
   el.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>openBook(b.dataset.open,(S.bookPos||{})[b.dataset.open]||0));
   el.querySelectorAll("[data-del]").forEach(b=>b.onclick=async()=>{if(!confirm(cloudOK()?"Xóa sách này khỏi thiết bị và tài khoản?":"Xóa sách này khỏi thiết bị?"))return;const id=b.dataset.del;delete BOOKC[id];try{await idbDo("readwrite",x=>x.delete(id))}catch(e){}await bookCloudDel(id);await loadBooks();renderBooks();renderTySrc()})}
-function openBook(id,ch){const b=BOOKC[id];if(!b){toast("Sách chưa có trên thiết bị này, hãy chọn lại file");return}RD={id,ch:Math.max(0,Math.min(ch,b.chapters.length-1))};S.bookPos=S.bookPos||{};S.bookPos[id]=RD.ch;S.lastBook=id;save();renderReader();renderTySrc()}
+function openBook(id,ch){const b=BOOKC[id];if(!b){toast("Sách chưa có trên thiết bị này, hãy chọn lại file");return}if(!bookOpen(b)){toast(`Sách này mở khi đạt ${R[Math.max(0,LVOF.indexOf(bookLv(b)))][0]}`);return}RD={id,ch:Math.max(0,Math.min(ch,b.chapters.length-1))};S.bookPos=S.bookPos||{};S.bookPos[id]=RD.ch;S.lastBook=id;save();renderReader();renderTySrc()}
 function renderReader(){const b=BOOKC[RD.id],c=b.chapters[RD.ch],o=RDOPT(),key=RD.id+":"+RD.ch,done=(S.bookRead||{})[key];let tn=0,tk=0;
   const units=c.u.map((u,i)=>{const t=u.zh?tokHTML(u.zh):{h:"",n:0,k:0};tn+=t.n;tk+=t.k;return`<div class="rdu">${u.zh?`<div class="rdzh han">${t.h}<button class="rdspk" data-u="${i}" aria-label="Nghe đoạn này">🔊</button></div>`:""}${o.py&&u.py?`<div class="rdpy">${esc(u.py)}</div>`:""}${o.vi&&u.vi?`<div class="rdvi">${esc(u.vi)}</div>`:""}</div>`}).join("");
   $("libBooks").innerHTML=`<div class="rdbar"><button class="btn" id="rdBack">‹ Giá sách</button><select class="search" id="rdCh" style="flex:1;min-width:0">${b.chapters.map((x,i)=>`<option value="${i}" ${i===RD.ch?"selected":""}>${i+1}. ${esc(x.t)}</option>`).join("")}</select></div>
@@ -1450,7 +1521,7 @@ function wordPop(t){const w=dict().get(t),hv=w?w.hv:[...t].map(c=>HV[c]||"?").jo
 $("wpop").onclick=e=>{if(e.target.id==="wpop")$("wpop").classList.remove("show")};
 function setLibTab(t){libTab=t;document.querySelectorAll("[data-lt]").forEach(b=>b.classList.toggle("on",b.dataset.lt===t));$("libWords").style.display=t==="w"?"":"none";$("libBooks").style.display=t==="b"?"":"none";if(t==="b")renderBooks();else renderLib()}
 document.querySelectorAll("[data-lt]").forEach(b=>b.onclick=()=>setLibTab(b.dataset.lt));
-async function pickBookSentence(){const id=S.lastBook&&BOOKC[S.lastBook]?S.lastBook:(BOOKS[0]&&BOOKS[0].id);if(!id)return null;const b=BOOKC[id];if(!b)return null;
+async function pickBookSentence(){const ok=BOOKS.filter(b=>bookOpen(BOOKC[b.id]));const id=S.lastBook&&BOOKC[S.lastBook]&&bookOpen(BOOKC[S.lastBook])?S.lastBook:(ok[0]&&ok[0].id);if(!id)return null;const b=BOOKC[id];if(!b)return null;
   const ch=(S.bookPos||{})[id]||0,pool=[];for(let d=0;d<3&&pool.length<8;d++){const c=b.chapters[Math.min(b.chapters.length-1,ch+d)];c.u.forEach(u=>((u.zh||"").match(/[^。！？；]+[。！？；]*[”」』]?/g)||[]).forEach(x=>{const t=x.trim().replace(/^[”」』，、]+/,""),n=(t.match(/[\u3400-\u9fff]/g)||[]).length;if(n>=4&&n<=28)pool.push({text:t,ch:c.t})}))}
   if(!pool.length)return null;const p=pool[Math.random()*pool.length|0];return{...p,book:b.title}}
 
@@ -1496,6 +1567,91 @@ $("tySkip").onclick=()=>{if(TY&&TY.kind==="w")S.wrong[TY.w.k]=1;save();typeNext(
 $("tySpk").onclick=()=>TY&&speak(TY.text);
 $("tyPy").onclick=()=>{if(!TY)return;$("tyPyT").textContent=TY.kind==="w"?TY.w.p:segment(TY.text).map(t=>t.w?t.w.p:(t.cjk?"?":"")).filter(Boolean).join(" ")+" (tham khảo)"};
 loadBooks().then(()=>{renderTySrc();if(curView==="vLib"&&libTab==="b")renderBooks()});
+
+/* ---------- TU LUYỆN CĂN CƠ ---------- */
+let BT="ini",BQ=null,bqMode="tone",radF="all";
+const BASE=()=>S.base||(S.base={seen:{}});
+const TONEMAP={"ā":[1,"a"],"á":[2,"a"],"ǎ":[3,"a"],"à":[4,"a"],"ē":[1,"e"],"é":[2,"e"],"ě":[3,"e"],"è":[4,"e"],"ī":[1,"i"],"í":[2,"i"],"ǐ":[3,"i"],"ì":[4,"i"],"ō":[1,"o"],"ó":[2,"o"],"ǒ":[3,"o"],"ò":[4,"o"],"ū":[1,"u"],"ú":[2,"u"],"ǔ":[3,"u"],"ù":[4,"u"],"ǖ":[1,"ü"],"ǘ":[2,"ü"],"ǚ":[3,"ü"],"ǜ":[4,"ü"]};
+function parseSyl(p){p=p.toLowerCase().trim();if(!/^[a-zāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜü]+$/.test(p))return null;let tone=5,plain="";for(const ch of p){const t=TONEMAP[ch];if(t){tone=t[0];plain+=t[1]}else plain+=ch}
+  const m=plain.match(/^(zh|ch|sh|[bpmfdtnlgkhjqxrzcsyw])?(.*)$/);let ini=m[1]||"",fin=m[2];if(!fin)return null;
+  if(ini==="y"){fin={i:"i",a:"ia",e:"ie",ao:"iao",ou:"iu",an:"ian",ang:"iang",in:"in",ing:"ing",ong:"iong",u:"ü",ue:"üe",uan:"üan",un:"ün",o:"o"}[fin]||fin;ini=""}
+  else if(ini==="w"){fin={u:"u",a:"ua",o:"uo",ai:"uai",ei:"ui",an:"uan",en:"un",ang:"uang",eng:"ueng"}[fin]||fin;ini=""}
+  else if(/^[jqx]$/.test(ini)&&fin[0]==="u")fin="ü"+fin.slice(1);
+  if(/^(zh|ch|sh|r|z|c|s)$/.test(ini)&&fin==="i")fin="-i";
+  if(fin==="uei")fin="ui";if(fin==="iou")fin="iu";if(fin==="uen")fin="un";
+  return{ini,fin,tone,plain}}
+let SYLS=null;
+function sylPool(){if(SYLS)return SYLS;SYLS=W.filter(w=>w.l<=4&&[...w.h].length===1&&!/\s/.test(w.p)).map(w=>({w,s:parseSyl(w.p)})).filter(x=>x.s);return SYLS}
+function giveQi(ok){checkDaily();touchStreak();S.st.t++;if(ok){S.st.c++;S.daily.c++}if(trib)return 0;const nd=need();
+  if(ok){S.combo++;const g=r1(comboMul());S.qi=r1(Math.min(nd,S.qi+g));S.stones+=S.combo>=10?2:1;return g}S.combo=0;S.qi=r1(Math.max(0,S.qi-5));return -5}
+function markSeen(k){const b=BASE();if(!b.seen[k]){b.seen[k]=1;save()}}
+function seenCount(prefix,n){const b=BASE();return`${Object.keys(b.seen).filter(k=>k.startsWith(prefix)).length}/${n}`}
+function renderBase(){
+  const tabs=[["ini","Thanh mẫu"],["fin","Vận mẫu"],["tone","Thanh điệu"],["rad","214 Bộ thủ"],["quiz","Khảo hạch"]];
+  $("baseTabs").innerHTML=tabs.map(([v,t])=>`<button class="chip${BT===v?" on":""}" data-bt="${v}">${t}</button>`).join("");
+  $("baseTabs").querySelectorAll("[data-bt]").forEach(b=>b.onclick=()=>{BT=b.dataset.bt;renderBase()});
+  const el=$("baseBody");
+  if(BT==="ini"||BT==="fin"){const D=BT==="ini"?INITS:FINS,n=D.reduce((a,g)=>a+g[1].length,0),pre=BT==="ini"?"i:":"f:";
+    el.innerHTML=`<p class="muted small">${BT==="ini"?"Thanh mẫu là phụ âm đầu của âm tiết. Bấm vào từng thẻ để nghe chữ mẫu và đọc mẹo phát âm. Chú ý cặp không bật hơi / bật hơi (b–p, d–t, g–k, j–q, zh–ch, z–c).":"Vận mẫu là phần vần đứng sau thanh mẫu. Bấm vào từng thẻ để nghe và xem cách so sánh với âm tiếng Việt."} Đã học: <b>${seenCount(pre,n)}</b></p>`+
+      D.map(([g,items])=>`<h3>${g}</h3><div class="pgrid">${items.map(it=>`<button class="pcard${BASE().seen[pre+it[0]]?" seen":""}" data-k="${it[0]}"><b>${it[0]}</b><span class="han">${it[1]}</span><small>${it[2]}</small></button>`).join("")}</div>`).join("")+
+      `<button class="btn main wide" style="margin-top:14px" data-go="${BT==="ini"?"ini":"fin"}">🎧 Luyện nghe ${BT==="ini"?"thanh mẫu":"vận mẫu"}</button>`;
+    el.querySelectorAll(".pcard").forEach(b=>b.onclick=()=>{const it=D.flatMap(g=>g[1]).find(x=>x[0]===b.dataset.k);markSeen(pre+it[0]);b.classList.add("seen");phonePop(it,BT)});
+    el.querySelector("[data-go]").onclick=e=>{bqMode=e.target.dataset.go;BT="quiz";renderBase()};return}
+  if(BT==="tone"){el.innerHTML=`<p class="muted small">Tiếng Trung phổ thông có 4 thanh và 1 thanh nhẹ. Cùng âm “ma” nhưng khác thanh là khác nghĩa hoàn toàn. Bấm vào từng thẻ để nghe.</p><div class="tgrid5">`+
+      TONES.map(t=>`<button class="tcard${BASE().seen["t:"+t[0]]?" seen":""}" data-t="${t[0]}"><svg viewBox="0 0 100 56"><path d="M0 4H100M0 52H100" stroke="var(--line)" stroke-dasharray="3 3"/><path d="${t[5]}" stroke="var(--cinnabar)" stroke-width="4" fill="none" stroke-linecap="round"/></svg><b class="han">${t[1]}</b><span>${t[2]}</span><small>${t[3]}</small></button>`).join("")+`</div><div class="panel" id="toneDesc"><p class="muted small" style="margin:0">Chọn một thanh để xem mô tả.</p></div>
+      <h3>Quy tắc biến điệu</h3>`+TONE_RULES.map(r=>`<div class="panel"><b>${r[0]}</b><p class="small" style="margin:6px 0">${r[1]}</p><button class="btn" data-say="${r[2]}">🔊 ${r[2]}</button></div>`).join("")+
+      `<button class="btn main wide" style="margin-top:14px" data-go="tone">🎧 Luyện nghe thanh điệu</button>`;
+    el.querySelectorAll(".tcard").forEach(b=>b.onclick=()=>{const t=TONES.find(x=>x[0]===+b.dataset.t);markSeen("t:"+t[0]);b.classList.add("seen");speak(t[1],.8);$("toneDesc").innerHTML=`<b>${t[3]}</b><p class="small" style="margin:6px 0 0">${t[4]}</p><div class="row" style="margin-top:8px">${["妈麻马骂吗","八拔把爸吧","衣姨椅意"][0].split("").map((c,i)=>`<button class="btn han" data-say="${c}">${c} ${TONES[i][2]}</button>`).join("")}</div>`;$("toneDesc").querySelectorAll("[data-say]").forEach(x=>x.onclick=()=>speak(x.dataset.say,.8))});
+    el.querySelectorAll("[data-say]").forEach(x=>x.onclick=()=>speak(x.dataset.say,.8));el.querySelector("[data-go]").onclick=()=>{bqMode="tone";BT="quiz";renderBase()};return}
+  if(BT==="rad"){const strokes=[...new Set(RADS.map(r=>r.st))];
+    el.innerHTML=`<p class="muted small">214 bộ thủ Khang Hy là “chữ cái” của chữ Hán. Nắm được bộ thủ sẽ đoán được nghĩa và nhớ mặt chữ nhanh hơn. Dạng trong ngoặc là dạng biến thể hoặc giản thể. Đã học: <b>${seenCount("r:",214)}</b></p>
+      <input class="search" id="radQ" placeholder="Tìm: thủy, nước, 水, shuǐ…" autocomplete="off"><div class="chips" style="margin-top:8px">${["all",...strokes].map(s=>`<button class="chip${String(radF)===String(s)?" on":""}" data-rs="${s}">${s==="all"?"Tất cả":s+" nét"}</button>`).join("")}</div><div class="rgrid" id="radGrid"></div>
+      <button class="btn main wide" style="margin-top:14px" data-go="rad">📜 Khảo hạch bộ thủ</button>`;
+    const draw=()=>{const q=$("radQ").value.trim().toLowerCase(),st=t=>t.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+      const L=RADS.filter(r=>(radF==="all"||r.st===+radF)&&(!q||r.c.includes(q)||r.v.includes(q)||st(r.hv).includes(st(q))||st(r.m).includes(st(q))||st(r.p).includes(st(q))));
+      $("radGrid").innerHTML=L.map(r=>`<button class="rcard${BASE().seen["r:"+r.n]?" seen":""}" data-n="${r.n}"><span class="rn">${r.n}</span><b class="han">${r.c}</b>${r.v?`<small class="han">(${r.v})</small>`:""}<span class="rhv">${r.hv}</span><small>${r.m}</small></button>`).join("")||`<p class="muted">Không tìm thấy bộ thủ phù hợp.</p>`;
+      $("radGrid").querySelectorAll(".rcard").forEach(b=>b.onclick=()=>{const r=RADS[+b.dataset.n-1];markSeen("r:"+r.n);b.classList.add("seen");radPop(r)})};
+    $("radQ").oninput=draw;el.querySelectorAll("[data-rs]").forEach(b=>b.onclick=()=>{radF=b.dataset.rs;renderBase()});draw();
+    el.querySelector("[data-go]").onclick=()=>{bqMode="rad";BT="quiz";renderBase()};return}
+  if(BT==="quiz"){const modes=[["tone","Nghe thanh điệu"],["ini","Nghe thanh mẫu"],["fin","Nghe vận mẫu"],["rad","Bộ thủ → Nghĩa"],["radr","Nghĩa → Bộ thủ"]];
+    el.innerHTML=`<div class="chips">${modes.map(([v,t])=>`<button class="chip${bqMode===v?" on":""}" data-bm="${v}">${t}</button>`).join("")}</div>
+      <div class="panel bqbox"><div class="bqp han" id="bqP"></div><div class="muted small" id="bqH"></div></div><p class="ask" id="bqA"></p><div class="opts" id="bqO"></div><div class="fb" id="bqF"></div>
+      <p class="muted small" style="text-align:center">Mỗi câu đúng được +1 linh khí × chuỗi, sai trừ 5, giống phần Tu luyện.</p>`;
+    el.querySelectorAll("[data-bm]").forEach(b=>b.onclick=()=>{bqMode=b.dataset.bm;renderBase()});bqNext()}}
+function phonePop(it,kind){const ex=it[1],w=dict().get(ex),hv=HV[ex]||"";
+  $("wpCard").innerHTML=`<div class="phon">${it[0]}</div><p style="margin:4px 0 10px">${it[3]}</p><div class="big han" style="font-size:44px">${ex}</div><div style="font-weight:700">${it[2]}</div><p class="muted small">${w?w.v+" · ":""}${hv?"Hán Việt: "+hv:""}</p>
+  <div class="row" style="justify-content:center"><button class="btn main" id="ppS">🔊 Nghe</button><button class="btn" id="ppL">🐢 Nghe chậm</button></div>${kind==="ini"&&it[4]?`<p class="small muted" style="margin-top:10px">Dễ nhầm với <b>${it[4]}</b>: so sánh hai âm để nghe rõ khác biệt.</p><button class="btn" id="ppC">🔊 Nghe âm ${it[4]}</button>`:""}
+  <button class="btn wide" id="ppX" style="margin-top:10px">Đóng</button>`;
+  $("wpop").classList.add("show");speak(ex,.8);$("ppS").onclick=()=>speak(ex,.9);$("ppL").onclick=()=>speak(ex,.55);$("ppX").onclick=()=>$("wpop").classList.remove("show");
+  if($("ppC")){const o=INITS.flatMap(g=>g[1]).find(x=>x[0]===it[4]);$("ppC").onclick=()=>speak(o[1],.8)}}
+function radPop(r){const exs=[...r.ex].filter((c,i,a)=>a.indexOf(c)===i);
+  $("wpCard").innerHTML=`<div class="muted small">Bộ thứ ${r.n} · ${r.st} nét</div><div class="big han" style="font-size:64px;line-height:1.1">${r.c}${r.v?`<span style="font-size:30px;color:var(--muted)"> ${r.v}</span>`:""}</div><div style="font-size:18px;font-weight:700">Bộ ${r.hv} · ${r.p}</div><p>${r.m}</p>
+  <h3 style="margin:10px 0 6px">Chữ có bộ này</h3><div class="row" style="justify-content:center">${exs.map(c=>{const w=dict().get(c);return`<button class="btn han rex" data-c="${c}" style="font-size:20px">${c}<small style="display:block;font-size:11px;font-family:inherit">${HV[c]||""}${w?" · "+w.v:""}</small></button>`}).join("")}</div>
+  <button class="btn wide" id="rpX" style="margin-top:12px">Đóng</button>`;
+  $("wpop").classList.add("show");speak(r.c);$("wpCard").querySelectorAll(".rex").forEach(b=>b.onclick=()=>speak(b.dataset.c));$("rpX").onclick=()=>$("wpop").classList.remove("show")}
+const INI_ALT={b:"pmfd",p:"bft",m:"nbf",f:"hpb",d:"tnl",t:"dnl",n:"lmd",l:"nrd",g:"khd",k:"ghq",h:"fkg",j:"qx",q:"jx",x:"qs",zh:["z","ch","j"],ch:["c","zh","q"],sh:["s","x","r"],r:["l","sh"],z:["zh","c","j"],c:["ch","z","q"],s:["sh","x","c"]};
+const FIN_PAIR={an:"ang",ang:"an",en:"eng",eng:"en",in:"ing",ing:"in",ian:"iang",iang:"ian",uan:"uang",uang:"uan",ie:"üe",üe:"ie",ou:"uo",uo:"ou",ai:"ei",ei:"ai",ui:"ei",iu:"ou",un:"ong",ong:"un",ü:"u",u:"ü",ao:"ou",a:"e",e:"a",o:"uo",i:"ü",ia:"ie",iao:"iu",ua:"uo",uai:"ai",üan:"uan",ün:"un",iong:"ong",er:"e"};
+function bqNext(){if(!$("bqO"))return;BQ={lock:false};$("bqF").innerHTML="";let opts=[],ans,prompt="🔊",hint="Chạm để nghe lại",ask="";
+  if(bqMode==="tone"||bqMode==="ini"||bqMode==="fin"){let pool=sylPool();if(bqMode==="ini")pool=pool.filter(x=>x.s.ini);if(bqMode==="fin")pool=pool.filter(x=>x.s.fin!=="-i");const it=pool[Math.random()*pool.length|0];BQ.it=it;
+    if(bqMode==="tone"){ans=String(it.s.tone);opts=["1","2","3","4","5"];ask="Nghe và chọn thanh điệu"}
+    else if(bqMode==="ini"){ans=it.s.ini;const alt=[...(INI_ALT[ans]||[])].filter(x=>x!==ans);const all=["b","p","m","f","d","t","n","l","g","k","h","j","q","x","zh","ch","sh","r","z","c","s"];opts=[ans,...shuffle(alt).slice(0,2)];while(opts.length<4){const x=all[Math.random()*all.length|0];if(!opts.includes(x))opts.push(x)}ask="Nghe và chọn thanh mẫu (phụ âm đầu)"}
+    else{ans=it.s.fin;const all=FINS.flatMap(g=>g[1].map(x=>x[0]));opts=[ans];if(FIN_PAIR[ans])opts.push(FIN_PAIR[ans]);while(opts.length<4){const x=all[Math.random()*all.length|0];if(!opts.includes(x))opts.push(x)}ask="Nghe và chọn vận mẫu (phần vần)"}
+    setTimeout(()=>speak(it.w.h,.85),200)}
+  else{const r=RADS[Math.random()*RADS.length|0];BQ.r=r;const others=shuffle(RADS.filter(x=>x!==r)).slice(0,3);
+    if(bqMode==="rad"){prompt=r.c+(r.v?` (${r.v})`:"");hint=`${r.st} nét`;ask="Bộ thủ này là bộ gì?";ans=`${r.hv} · ${r.m}`;opts=[r,...others].map(x=>`${x.hv} · ${x.m}`)}
+    else{prompt=`Bộ ${r.hv}`;hint=r.m;ask="Chọn đúng bộ thủ";ans=r.c;opts=[r,...others].map(x=>x.c)}}
+  BQ.ans=ans;$("bqP").textContent=prompt;$("bqP").classList.toggle("vi",bqMode==="radr");$("bqH").textContent=hint;$("bqA").textContent=ask;
+  $("bqP").onclick=()=>{if(BQ.it)speak(BQ.it.w.h,.85)};
+  const lab=o=>bqMode==="tone"?(o==="5"?"Thanh nhẹ":"Thanh "+o):o;
+  $("bqO").className="opts"+(bqMode==="tone"?" five":"");$("bqO").innerHTML=shuffle(opts.slice()).map(o=>`<button class="opt${bqMode==="radr"?" han":""}" data-o="${esc(o)}">${esc(lab(o))}</button>`).join("");
+  if(bqMode==="tone")[...$("bqO").children].sort((a,b)=>a.dataset.o.localeCompare(b.dataset.o)).forEach(b=>$("bqO").appendChild(b));
+  $("bqO").querySelectorAll(".opt").forEach(b=>b.onclick=()=>bqAns(b))}
+function bqAns(btn){if(!BQ||BQ.lock)return;BQ.lock=true;const ok=btn.dataset.o===BQ.ans;
+  $("bqO").querySelectorAll(".opt").forEach(b=>{b.disabled=true;if(b.dataset.o===BQ.ans)b.classList.add("ok")});if(!ok)btn.classList.add("no");
+  const g=giveQi(ok);let info="";if(BQ.it){const w=BQ.it.w;info=`<span class="han">${w.h}</span> ${w.p} · ${esc(w.v)}`;$("bqP").textContent=w.h;$("bqP").classList.remove("vi")}else{const r=BQ.r;info=`<span class="han">${r.c}</span> Bộ ${r.hv} (${r.p}) · ${r.m}`;markSeen("r:"+r.n)}
+  $("bqF").innerHTML=(ok?`<span class="good">Chính xác!${g?` +${g} linh khí`:""}</span>`:`<span class="bad">Chưa đúng${g?` · −5 linh khí`:""}</span>`)+`<br>${info}`;
+  if(ok){fxFloat($("bqP"),`+${g||0} 灵气`);if(S.combo===5)sage("Căn cơ vững thì tu vi mới cao. Tiếp tục nào!")}else shake($("bqP"));
+  save();renderTop();setTimeout(()=>{if(curView==="vBase"&&BT==="quiz")bqNext()},ok?1100:2300)}
 
 /* ---------- KHẢO NGHIỆM VƯỢT CẤP ---------- */
 let SK=null;
@@ -1589,16 +1745,19 @@ $("bkLoad").onclick=()=>{const v=$("bkCode").value.trim();if(!v){toast("Dán mã
     d.ts=Date.now();applyState(d);if(S.cloud){CLOUD.dirty=true;cloudFlush()}$("bkCode").value="";toast("Đã khôi phục tiến độ")}catch(e){toast("Mã sao lưu không hợp lệ")}};
 
 /* ---------- QUYỀN TỐI CAO ---------- */
+const HSK_HASH="bb6b504592fca74d37533d5fbb6383494a92e7a5004a6dfd7c2a9f6efce67d68";
 const ADMIN_HASH="15bdb074e523377f870c20f1d3267547f9c0d09cd9a7730d4d318ba70e2fc24c";
 async function sha256(t){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(t));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("")}
-function renderAdmin(){const on=!!S.admin;$("admLogin").style.display=on?"none":"";$("admPanel").style.display=on?"":"none";
+function renderAdmin(){const on=!!S.admin,lite=!on&&!!S.hskAll;$("admLogin").style.display=on||lite?"none":"";$("admPanel").style.display=on?"":"none";$("admLite").style.display=lite?"":"none";
   if(on){$("admRealm").innerHTML=R.map((r,i)=>`<option value="${i}" ${i===S.realm?"selected":""}>${r[0]} (HSK${LVOF[i]})</option>`).join("");
     $("admSub").innerHTML=SUB.map((x,i)=>`<option value="${i}" ${i===(S.sub||0)?"selected":""}>${x}</option>`).join("")}
   $("admBadge").style.display=on?"":"none"}
 $("admGo").onclick=async()=>{const u=$("admU").value.trim(),p=$("admP").value;
-  try{if(await sha256(u+":"+p)===ADMIN_HASH){S.admin=true;save();$("admP").value="";renderAll();renderAdmin();trainNext();toast("Đã mở quyền truy cập tối cao 👑")}else toast("Sai tài khoản hoặc mật khẩu")}catch(e){toast("Thiết bị không hỗ trợ đăng nhập")}};
+  try{const hs=await sha256(u+":"+p);if(hs===ADMIN_HASH){S.admin=true;save();$("admP").value="";renderAll();renderAdmin();trainNext();toast("Đã mở quyền truy cập tối cao 👑")}
+    else if(hs===HSK_HASH){S.hskAll=true;save();$("admP").value="";renderAll();renderAdmin();toast("Đã mở luyện mọi cấp HSK trong Tu luyện 🔓")}else toast("Sai tài khoản hoặc mật khẩu")}catch(e){toast("Thiết bị không hỗ trợ đăng nhập")}};
 $("admP").addEventListener("keydown",e=>{if(e.key==="Enter")$("admGo").click()});
-$("admOut").onclick=()=>{S.admin=false;if(S.range!=="realm"&&!lvOpen(+S.range))S.range="realm";save();renderAll();renderAdmin();trainNext();toast("Đã đăng xuất quyền tối cao")};
+$("admLiteOut").onclick=()=>{S.hskAll=false;if(S.range!=="realm"&&!lvOpenTrain(+S.range))S.range="realm";save();renderAll();renderAdmin();trainNext();toast("Đã đăng xuất tài khoản admin")};
+$("admOut").onclick=()=>{S.admin=false;S.hskAll=false;if(S.range!=="realm"&&!lvOpenTrain(+S.range))S.range="realm";save();renderAll();renderAdmin();trainNext();toast("Đã đăng xuất quyền tối cao")};
 $("admApply").onclick=()=>{S.realm=+$("admRealm").value;S.sub=+$("admSub").value;S.qi=0;trib=null;$("trib").classList.remove("show");save();renderAll();renderAdmin();trainNext();stampSeal();toast(`Đã chuyển đến ${R[S.realm][0]} ${SUB[S.sub]}`)};
 $("admQi").onclick=()=>{S.qi=need();save();renderAll();toast("Linh khí đã đầy")};
 $("admStone").onclick=()=>{S.stones+=1000;save();renderAll();toast("+1000 linh thạch")};
@@ -1653,7 +1812,7 @@ document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{
   document.querySelectorAll(".view").forEach(v=>v.classList.toggle("on",v.id===curView));
   window.scrollTo(0,0);
   if(curView==="vWrite"){renderTySrc();if(!TY)typeNext()}
-  if(curView==="vLib")setLibTab(libTab);if(curView==="vCave")renderCave();if(curView==="vBoss")renderBosses();
+  if(curView==="vLib")setLibTab(libTab);if(curView==="vBase"){renderBase();if(!BASE().hi){BASE().hi=1;save();sage("Căn cơ vững thì tu vi mới cao. Hãy học kỹ phát âm và bộ thủ trước nhé!",true)}}if(curView==="vCave")renderCave();if(curView==="vBoss")renderBosses();
 });
 
 function renderAll(){renderTop();renderChips();renderBosses();renderCave();if(curView==="vLib")renderLib()}
